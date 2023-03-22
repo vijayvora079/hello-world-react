@@ -1,0 +1,464 @@
+https://www.youtube.com/watch?v=oecI26cWqzk&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3&index=7
+
+React?
+- It's not a framework. it's a JS library
+- It's reponsible to build UI
+- Project created and maintain by Facebook
+- Component based architecture -> Header, SideNav, Main content, Footer
+- Reausable code -> same components can be used for angular, veu
+- React is Declarative -> 
+
+Create React App
+--------------------
+option 1
+	npx create-react-app hello-world -g
+option 2
+	npm install create-react-app
+	create-react-app hello-world
+	
+Execution flow
+-------------
+index.html
+index.js
+app.js
+
+
+components
+----------
+App
+Header
+SideNav
+Content
+Footer
+
+Component Types
+-------------
+stateless functional components / Funtional Component
+	function Welcome(props){
+		return <h1> welcome, {props.name} </h1>
+	}
+
+stateful class components / Class Component
+	Class Welcome extends react.component{
+		render(){
+			return <h1> Welcome, {this.props.name} </h1>
+		}
+	}
+	
+npm run eject
+-----------
+- how index.js injects in index.html without writting in index.html file	
+- to see how react inject js files and building webpack
+- it creates 'bundle.js' file and injecting in html page
+	
+	
+Create Component 'Greet'
+-------------
+create folder 'components'
+create js file under this folder 'Greet.js'
+import React from 'react'
+function welcome(){return <h1> Welcome Vijay </h1>}
+export default Greet
+
+in App.js
+import Greet from './components/Greet' can omit '.js' extension
+whithin function '<Greet></Greet>' custom HTML Tag
+
+Option 1 : allow to give component name at import time
+export default Greet
+import Greet from './components/Greet'
+
+option 2 : will not allow to change name.. will be stick with name
+export const Greet = () => <h1>Hello Vijay</h1>
+import Greet from './components/Greet'
+
+Greet -> Functional Component
+Welcome -> Class Component
+
+Functional VS Class component
+
+
+JSX (Hello.js)
+https://www.youtube.com/watch?v=7fPXI_MnBOY&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3&index=8
+------------------------
+Javascript XML
+
+JSX will translate html text into react createElement, that's why we need to import react in every component
+
+return <h1>Hellow vijay</h1> -> JSX -> return React.createElement('h1', {id: 'hello'}, 'Hellow vijay');
+
+Props
+------------
+<Hello name="user2"/>
+function Hello(props){
+    return (
+    <div id='hello' className='dummyClass' >
+		<h1>Hello {props.name}</h1>
+	</div>
+	)
+}
+
+state - chapter 10
+--------------
+subscribe button
+
+this.state = {
+	message : 'Welcome Visitor'
+}
+
+<button onClick={() => this.changeMessage()}>Subscribe</button>
+
+changeMessage(){
+	this.setState({
+		message : 'Thanks for subscribing'
+	});
+}
+
+setState - 11
+------------
+counter
+
+incrementFive(){
+	this.increment();
+	this.increment();
+	this.increment();
+	this.increment();
+	this.increment();
+}
+
+increment(){
+ this.setState((prevState) => ({
+				count : prevState.count + 1
+		}), () => {console.log(this.state.count)});
+}
+
+<button onClick={() => this.incrementFive()}>Increment</button>
+
+
+Destructuring props and state - 12
+--------------------
+desctructure properties from props and state object
+
+export const Greet = props =>
+    {
+        const {name, surname} = props;
+        return(
+        <h1>Hello {name} {surname}</h1>
+        )
+    }
+
+
+Event Handling - 13
+---------------
+
+Function Component
+------
+function FunctionClick(){
+    function clickHandler(){
+        alert('Clicked');
+    }
+    return (
+        <button onClick={clickHandler}>Click</button>
+    );
+}
+
+Class Component
+-------
+class ClassClick extends Component{
+    clickHandler(){
+        alert('Clicked');
+    }
+    render(){
+        return (
+        <div>
+            <button onClick={this.clickHandler}>Click Me</button>
+        </div>
+        )
+    }
+}
+
+
+Binding Event Handlers - 14
+-------------
+1. difference between function call and event binding
+function call : <button onClick={() => this.clickHandler()}>Click</button>
+event binding : <button onClick={clickHandler}>Click</button>
+
+4 options to bind the function
+
+prerequite
+
+constructor(){
+	super()
+	this.state = {
+		count : 0
+	}
+}
+
+clickHandler(){
+	this.setState({
+		message : 'Thanks for subscribing'
+	});
+}
+
+Option 1: calling handler function
+	<button onClick={() => this.clickHandler()}>Click</button>	- Performance issue
+Option 2: binding handler funtion
+	<button onClick={this.clickHandler.bind(this)}>Click</button> - performance issue
+Option 3: define binding handler function in constructor
+	constructor(){
+		this.clickHandler = this.clickHandler.bind(this)
+	}
+	<button onClick={this.clickHandler}>Click</button> - React documentation
+Option 4: from normal function to arrow function
+	clickHandler = () => {
+		this.setState({
+			message : 'Thanks for subscribing'
+		});
+	}
+	<button onClick={this.clickHandler}>Click</button>
+	
+
+Methods as props - 15
+--------------------------
+Parent child components - child component calls parent component's method
+ChildComponent.js
+ParentComponent.js
+
+
+Conditional Rendering - 16
+--------------------
+1. if/else
+2. element variables
+3. ternary conditional operator
+4. short circuit operator
+
+UserGreeting.js
+
+
+List Rendering - 17
+---------------
+1. how to render list of element
+2. how to separate out jsx from main file to child component
+
+NameList.js
+
+
+Lists and Keys - 18
+---------------
+key prop is reserved by react
+if you want to use this .. use with different name
+
+<Person key={person.id} id={person.id} person={person}></Person>
+
+why key is important?
+react will not render all data again.. it will skip those data which are already in the dom and will add only those items which are not in the dom,
+key will help reac to identify the exsting items
+
+
+Index as Key Anti-pattern - 19
+----------------
+without key props : names.map(name => <h2> {name> </h2>)
+with key props : names.map( (name, index) => <h2 key={index}> {name> </h2>)
+
+
+Styling and CSS Basics - 20
+------------
+1. CSS Stylesheets
+2. Inline styling
+3. CSS Modules
+
+
+Basics of Form Handling - 21
+------------------
+Form.js
+fetch values from form controls/components
+
+
+Component Lifecycle Methods - 22
+-----------------------
+Mounting :  Component is being rendered
+Updating : Rerender
+UnMounting : Component is being removed
+Error handling : any error while mouting parent/child component
+
+
+Component Mounting Lifecycle Methods - 23
+------------------
+Parent and child component's mount flow
+
+Constructor ( props )
+	|
+static getDerivedStateFromProps( props, state)
+	|
+render()
+	|
+componentDidMount()
+
+LifeCycleA.js
+
+
+Component Updating Lifecycle Methods - 24
+----------------------
+static getDerivedStateFromProps( props, state) - Will call everythime when state updates
+	|
+shouldComoponentUpdate(nextProps, nextState) - Before updateing states, to allow or prevent to update state
+	|
+render()
+	| 
+getSnapshotBeforeUpdate(prevProps, prevState) - before relfacting in DOM. Ex, read scroll position, and update/retain after adding items
+	|
+componentDidUpdate() - after update the DOM
+
+
+Component Unmouting Lifecycle Methods - 24
+----------------------
+componentWillUnmount() - call right after component unmount/destroy from DOM. purpose, cleaing up resource
+
+
+Component ErrorHandling Lifecycle Methods - 24
+----------------------
+setDerivedStateFromError(error)
+	|
+componentDidCatch(error, info)
+
+
+------------------------------ ADVANCED ---------------------------
+Fragments - 25
+---------------------
+purpose : to prevent extra 'Div' node in DOM
+Limitation : react will not allow multiple html elment without grouping it
+error : 
+	<h1> Fragement Demo </h1>
+	<p> This is fragement Demo page </p>
+We can wrap it by 'Div' but this node will be added into the DOM
+instead, we can use <React.Fragement> like,
+	<React.Fragement>
+		<h1> Fragement Demo </h1>
+		<p> This is fragement Demo page </p>
+	</React.Fragement>
+	OR
+	<>
+		<h1> Fragement Demo </h1>
+		<p> This is fragement Demo page </p>
+	</>
+
+	
+Pure Components - 26
+-------------------------
+class NormalComponet extends Component{}
+class PureComponent extends PureComponent{}
+
+Difference?
+Regular : render method will be called everytime when parent component render method called
+pure : it will not call render method
+
+
+memo - 27
+-----------------
+to avoid rerender in normal component, memo feature of raect will be used
+instead, export detault MemoComponent
+export default React.memo(MemoComponent)
+
+Refs - 28
+-----------------
+reference of form elements.
+we can set value, get value, set focus on particual element through the ref feature of react
+
+RefsDemo.js
+
+
+Portals - 31
+-------------
+normal structure
+	<div id="root">
+		<div class="App">
+			-- All component will be render under this 
+		</div>
+	</div>
+
+If you want to break this and want to render somewhere (outside the root div) in the DOM, or break into the part, you can use Portals
+
+PortalDemo.js
+
+
+Error Boundary - 32
+-------------------
+purpose : if any of component throws the error, whole application should not crash, only that component should be show the error
+
+Hero.js
+ErrorBoundry.js
+
+
+Higher Order Components - 33 - part 1/3
+------------------------
+need?
+to share common functionalty (counter logic for hover,click and up/down) across the components
+
+const NewComponent = higherOrderComponent(orginalCompoent)
+like, const ironMan = withSuit(TonyStark)
+
+
+Render Props - 36 - 1/2
+---------------
+need?
+share props between components
+
+
+context - 38
+--------------
+need?
+property access across the components like, isLoggedIn, username
+
+1. create context
+	userContext.js
+	----------
+	const UserContext = React.createContext();
+	const UserProvider = UserContext.Provider
+	const UserConsumer = UserContext.Consumer
+	Expoert {UserProvider, UserConsumer}
+2. provide a conext value
+	import {UserProvider} from './components/userContext
+	<UserProvider value="Vijay">
+		child component who want to use this context value
+	</UserProvider>
+3. consume the context value
+	child component
+	----------
+	render(){
+		<UserConsumer>
+			{username => {return hello {username}}
+		</UserConsumer>
+	}
+
+- we can set default value like,
+		const UserContext = React.createContext("Vijay");
+		
+
+Http and React - 41
+-------------------
+
+web application		--->    Http Library	----> server
+	(React app)					(axios)
+
+npm install axios --> check in package.json after successfully installed
+
+
+HTTP Get Request - 42
+-----------------
+Purpose : How to call API call and render data into the application
+
+ListItem.js
+
+
+HTTP Post Request - 43
+-----------------
+Submit data to the API through POST Request
+
+state will have all forms data as a property
+axios.post('http://www.test.com/post', this.state)
+
+
+
+
+
